@@ -3,6 +3,12 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
+    <groupId>com.ihomziak.saga</groupId>
+    <artifactId>core</artifactId>
+    <version>1.0.0</version>
+    <name>core</name>
+    <description>core</description>
+
     <parent>
         <groupId>com.ihomziak</groupId>
         <artifactId>saga-spring-boot-app</artifactId>
@@ -10,12 +16,6 @@
         <relativePath>../pom.xml</relativePath>
     </parent>
 
-    <groupId>com.ihomziak.saga</groupId>
-    <artifactId>core</artifactId>
-    <version>1.0.0</version>
-
-    <name>core</name>
-    <description>core</description>
 
 
     <properties>
