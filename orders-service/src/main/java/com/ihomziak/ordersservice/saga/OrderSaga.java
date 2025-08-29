@@ -1,12 +1,7 @@
 package com.ihomziak.ordersservice.saga;
 
-import com.ihomziak.core.dto.commands.ApproveOrderCommand;
-import com.ihomziak.core.dto.commands.ProcessPaymentCommand;
-import com.ihomziak.core.dto.commands.ReserveProductCommand;
-import com.ihomziak.core.dto.events.OrderApprovedEvent;
-import com.ihomziak.core.dto.events.OrderCreatedEvent;
-import com.ihomziak.core.dto.events.PaymentProcessedEvent;
-import com.ihomziak.core.dto.events.ProductReservedEvent;
+import com.ihomziak.core.dto.commands.*;
+import com.ihomziak.core.dto.events.*;
 import com.ihomziak.core.types.OrderStatus;
 import com.ihomziak.ordersservice.service.OrderHistoryService;
 import org.springframework.beans.factory.annotation.Value;
@@ -73,5 +68,22 @@ public class OrderSaga {
     @KafkaHandler
     public void handleEvent(@Payload OrderApprovedEvent event) {
         orderHistoryService.add(event.getOrderId(), OrderStatus.APPROVED);
+    }
+
+    @KafkaHandler
+    public void handleEvent(@Payload PaymentFailedEvent event) {
+        CancelProductReservationCommand cancelProductReservationCommand =
+                new CancelProductReservationCommand(event.getProductId(),
+                        event.getOrderId(),
+                        event.getProductQuantity());
+        kafkaTemplate.send(productsCommandsTopicName, cancelProductReservationCommand);
+    }
+
+    @KafkaHandler
+    public void handleEvent(@Payload ProductReservationCancelledEvent event) {
+
+        RejectOrderCommand rejectOrderCommand = new RejectOrderCommand(event.getOrderId());
+        kafkaTemplate.send(ordersCommandsTopicName, rejectOrderCommand);
+        orderHistoryService.add(event.getOrderId(), OrderStatus.REJECTED);
     }
 }

@@ -1,6 +1,5 @@
 package com.ihomziak.ordersservice.service;
 
-
 import com.ihomziak.core.types.OrderStatus;
 import com.ihomziak.ordersservice.dto.OrderHistory;
 import com.ihomziak.ordersservice.jpa.entity.OrderHistoryEntity;
