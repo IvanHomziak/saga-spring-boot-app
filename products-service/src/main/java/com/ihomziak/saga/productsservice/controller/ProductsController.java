@@ -28,7 +28,7 @@ public class ProductsController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public ProductCreationResponse createProduct(@RequestBody @Valid ProductCreationRequest request) {
+    public ProductCreationResponse save(@RequestBody @Valid ProductCreationRequest request) {
         var product = new Product();
         BeanUtils.copyProperties(request, product);
         Product result = productService.save(product);
